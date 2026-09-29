@@ -1,0 +1,14 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application>
+        <!-- FileProvider dédié à share_lelo : autorité unique, aucun conflit avec d'autres plugins. -->
+        <provider
+            android:name="com.leloeduk.share_lelo.ShareLeloFileProvider"
+            android:authorities="${applicationId}.share_lelo.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/share_lelo_file_paths" />
+        </provider>
+    </application>
+</manifest>
