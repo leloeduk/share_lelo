@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application>
-        <!-- FileProvider dédié à share_lelo : autorité unique, aucun conflit avec d'autres plugins. -->
+        <!-- Dedicated FileProvider with a unique authority: no conflict with other plugins. -->
         <provider
             android:name="com.leloeduk.share_lelo.ShareLeloFileProvider"
             android:authorities="${applicationId}.share_lelo.fileprovider"

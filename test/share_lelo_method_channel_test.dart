@@ -34,18 +34,18 @@ void main() {
     expect(await platform.getApkInfo(), {'appName': 'Demo', 'apkSize': 42});
   });
 
-  test('shareApk envoie les arguments', () async {
+  test('shareApk sends the arguments', () async {
     final paths = await platform.shareApk(
-      fileName: 'MonApp',
-      text: 'Installe mon app',
+      fileName: 'MyApp',
+      text: 'Install my app',
       packageName: 'com.whatsapp',
     );
     expect(paths, ['/cache/share_lelo/Demo_v1.0.0.apk']);
     expect(calls.single.method, 'shareApk');
     expect(calls.single.arguments, {
-      'fileName': 'MonApp',
+      'fileName': 'MyApp',
       'chooserTitle': null,
-      'text': 'Installe mon app',
+      'text': 'Install my app',
       'subject': null,
       'packageName': 'com.whatsapp',
     });

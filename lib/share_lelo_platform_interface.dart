@@ -2,7 +2,7 @@ import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 import 'share_lelo_method_channel.dart';
 
-/// Interface commune des implémentations de share_lelo.
+/// Common interface for share_lelo implementations.
 abstract class ShareLeloPlatform extends PlatformInterface {
   /// Constructs a ShareLeloPlatform.
   ShareLeloPlatform() : super(token: _token);
@@ -24,17 +24,17 @@ abstract class ShareLeloPlatform extends PlatformInterface {
     _instance = instance;
   }
 
-  /// Informations brutes sur l'APK installé.
+  /// Raw information about the installed APK.
   Future<Map<String, dynamic>> getApkInfo() {
     throw UnimplementedError('getApkInfo() has not been implemented.');
   }
 
-  /// Copie l'APK dans le cache et retourne les chemins.
+  /// Copies the APK into the cache and returns the paths.
   Future<List<String>> prepareApk({String? fileName}) {
     throw UnimplementedError('prepareApk() has not been implemented.');
   }
 
-  /// Copie puis partage l'APK.
+  /// Copies then shares the APK.
   Future<List<String>> shareApk({
     String? fileName,
     String? chooserTitle,
@@ -45,7 +45,7 @@ abstract class ShareLeloPlatform extends PlatformInterface {
     throw UnimplementedError('shareApk() has not been implemented.');
   }
 
-  /// Supprime les copies d'APK du cache.
+  /// Deletes the cached APK copies.
   Future<void> clearCache() {
     throw UnimplementedError('clearCache() has not been implemented.');
   }

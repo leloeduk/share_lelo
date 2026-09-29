@@ -4,7 +4,7 @@ import 'package:share_lelo/share_lelo_method_channel.dart';
 import 'package:share_lelo/share_lelo_platform_interface.dart';
 
 void main() {
-  test('$MethodChannelShareLelo est l\'instance par défaut', () {
+  test('$MethodChannelShareLelo is the default instance', () {
     expect(ShareLeloPlatform.instance, isInstanceOf<MethodChannelShareLelo>());
   });
 
@@ -22,12 +22,12 @@ void main() {
     expect(info.appName, 'Demo');
     expect(info.versionCode, 3);
     expect(info.isSplit, isTrue);
-    expect(info.formattedSize, '18.4 Mo');
+    expect(info.formattedSize, '18.4 MB');
   });
 
-  test('ApkInfo sans splits', () {
+  test('ApkInfo without splits', () {
     final info = ApkInfo.fromMap({'totalSize': 512});
     expect(info.isSplit, isFalse);
-    expect(info.formattedSize, '512 o');
+    expect(info.formattedSize, '512 B');
   });
 }

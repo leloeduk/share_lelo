@@ -1,4 +1,4 @@
-/// Partage le fichier APK complet de votre application Flutter (Android).
+/// Share the full APK file of your Flutter app (Android).
 ///
 /// ```dart
 /// await ShareLelo.shareApk();
@@ -9,9 +9,9 @@ import 'dart:io';
 
 import 'share_lelo_platform_interface.dart';
 
-/// Informations sur l'APK de l'application installée.
+/// Information about the installed app's APK.
 class ApkInfo {
-  /// Crée un [ApkInfo]. Utilisez plutôt [ShareLelo.getApkInfo].
+  /// Creates an [ApkInfo]. Prefer [ShareLelo.getApkInfo].
   const ApkInfo({
     required this.appName,
     required this.packageName,
@@ -23,7 +23,7 @@ class ApkInfo {
     required this.totalSize,
   });
 
-  /// Construit un [ApkInfo] à partir de la réponse du code natif.
+  /// Builds an [ApkInfo] from the native response.
   factory ApkInfo.fromMap(Map<String, dynamic> map) => ApkInfo(
     appName: map['appName'] as String? ?? '',
     packageName: map['packageName'] as String? ?? '',
@@ -35,38 +35,38 @@ class ApkInfo {
     totalSize: (map['totalSize'] as num?)?.toInt() ?? 0,
   );
 
-  /// Nom affiché de l'application.
+  /// Display name of the app.
   final String appName;
 
-  /// Identifiant Android, ex. `com.exemple.monapp`.
+  /// Android application ID, e.g. `com.example.myapp`.
   final String packageName;
 
-  /// Version lisible, ex. `1.2.0`.
+  /// Human-readable version, e.g. `1.2.0`.
   final String versionName;
 
-  /// Numéro de build.
+  /// Build number.
   final int versionCode;
 
-  /// Chemin de l'APK principal (base.apk) installé sur l'appareil.
+  /// Path of the main APK (base.apk) installed on the device.
   final String apkPath;
 
-  /// Taille de l'APK principal en octets.
+  /// Size of the main APK in bytes.
   final int apkSize;
 
-  /// APK "split" présents si l'app a été installée depuis un App Bundle
-  /// (Play Store). Vide pour un APK classique (`flutter build apk`).
+  /// Split APKs present when the app was installed from an App Bundle
+  /// (Play Store). Empty for a regular APK (`flutter build apk`).
   final List<String> splitApkPaths;
 
-  /// Taille totale (APK principal + splits) en octets.
+  /// Total size (main APK + splits) in bytes.
   final int totalSize;
 
-  /// `true` si l'app est découpée en plusieurs APK. Dans ce cas l'APK
-  /// principal seul ne suffit pas pour installer l'app sur un autre appareil.
+  /// `true` when the app is split into several APKs. In that case the main
+  /// APK alone is not enough to install the app on another device.
   bool get isSplit => splitApkPaths.isNotEmpty;
 
-  /// Taille totale lisible, ex. `18.4 Mo`.
+  /// Human-readable total size, e.g. `18.4 MB`.
   String get formattedSize {
-    const units = ['o', 'Ko', 'Mo', 'Go'];
+    const units = ['B', 'KB', 'MB', 'GB'];
     var size = totalSize.toDouble();
     var unit = 0;
     while (size >= 1024 && unit < units.length - 1) {
@@ -81,7 +81,7 @@ class ApkInfo {
       'ApkInfo($appName $versionName+$versionCode, $formattedSize, split: $isSplit)';
 }
 
-/// Point d'entrée du package.
+/// Entry point of the package.
 class ShareLelo {
   ShareLelo._();
 
@@ -90,21 +90,21 @@ class ShareLelo {
   static void _ensureAndroid() {
     if (!Platform.isAndroid) {
       throw UnsupportedError(
-        'share_lelo ne fonctionne que sur Android (les APK sont propres à Android).',
+        'share_lelo only works on Android (APKs are Android-specific).',
       );
     }
   }
 
-  /// Ouvre la feuille de partage Android avec le fichier APK complet de
-  /// l'application (Bluetooth, WhatsApp, Gmail, Drive, Nearby Share...).
+  /// Opens the Android share sheet with the app's full APK file
+  /// (Bluetooth, WhatsApp, Gmail, Drive, Nearby Share...).
   ///
-  /// - [fileName] : nom du fichier partagé (par défaut `NomApp_vX.Y.Z.apk`).
-  /// - [chooserTitle] : titre de la feuille de partage.
-  /// - [text] / [subject] : message accompagnant le fichier.
-  /// - [packageName] : envoie directement à une app précise sans sélecteur,
-  ///   ex. `com.whatsapp` ou `com.android.bluetooth`.
+  /// - [fileName]: name of the shared file (default `AppName_vX.Y.Z.apk`).
+  /// - [chooserTitle]: title of the share sheet.
+  /// - [text] / [subject]: message sent along with the file.
+  /// - [packageName]: sends directly to a specific app without the chooser,
+  ///   e.g. `com.whatsapp` or `com.android.bluetooth`.
   ///
-  /// Retourne les chemins des fichiers partagés.
+  /// Returns the paths of the shared files.
   static Future<List<String>> shareApk({
     String? fileName,
     String? chooserTitle,
@@ -122,21 +122,21 @@ class ShareLelo {
     );
   }
 
-  /// Récupère les informations de l'APK installé (taille, version, chemin...).
+  /// Returns information about the installed APK (size, version, path...).
   static Future<ApkInfo> getApkInfo() async {
     _ensureAndroid();
     return ApkInfo.fromMap(await _platform.getApkInfo());
   }
 
-  /// Copie l'APK dans le cache de l'application et retourne les fichiers,
-  /// sans ouvrir le partage. Utile pour un envoi personnalisé (upload, etc.).
+  /// Copies the APK into the app cache and returns the files without opening
+  /// the share sheet. Useful for custom delivery (upload, etc.).
   static Future<List<File>> getApkFiles({String? fileName}) async {
     _ensureAndroid();
     final paths = await _platform.prepareApk(fileName: fileName);
     return paths.map(File.new).toList();
   }
 
-  /// Supprime les copies d'APK du cache pour libérer de l'espace.
+  /// Deletes the cached APK copies to free up space.
   static Future<void> clearCache() {
     _ensureAndroid();
     return _platform.clearCache();

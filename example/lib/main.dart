@@ -24,13 +24,13 @@ class _ShareApkPageState extends State<ShareApkPage> {
     setState(() => _loading = true);
     try {
       await ShareLelo.shareApk(
-        text: 'Installe mon application 🚀',
+        text: 'Install my app 🚀',
         packageName: packageName,
       );
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('Erreur : $e')));
+            .showSnackBar(SnackBar(content: Text('Error: $e')));
       }
     } finally {
       if (mounted) setState(() => _loading = false);
@@ -56,7 +56,7 @@ class _ShareApkPageState extends State<ShareApkPage> {
                   title: Text('${info.appName} v${info.versionName}'),
                   subtitle: Text(
                     '${info.formattedSize}'
-                    '${info.isSplit ? ' • ${info.splitApkPaths.length + 1} fichiers APK' : ''}',
+                    '${info.isSplit ? ' • ${info.splitApkPaths.length + 1} APK files' : ''}',
                   ),
                 ),
               ),
@@ -69,7 +69,7 @@ class _ShareApkPageState extends State<ShareApkPage> {
                       child: CircularProgressIndicator(strokeWidth: 2),
                     )
                   : const Icon(Icons.share),
-              label: const Text("Partager l'application"),
+              label: const Text('Share app'),
             ),
             const SizedBox(height: 12),
             OutlinedButton.icon(
@@ -77,7 +77,7 @@ class _ShareApkPageState extends State<ShareApkPage> {
                   ? null
                   : () => _share(packageName: 'com.android.bluetooth'),
               icon: const Icon(Icons.bluetooth),
-              label: const Text('Envoyer par Bluetooth'),
+              label: const Text('Send via Bluetooth'),
             ),
           ],
         ),

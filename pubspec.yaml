@@ -1,13 +1,13 @@
 name: share_lelo
-description: "Partagez le fichier APK complet de votre application Flutter (Bluetooth, WhatsApp, Nearby Share...) en une ligne. Pas un lien : l'application elle-même."
-version: 0.1.0
+description: "Share the full APK file of your Flutter app (Bluetooth, WhatsApp, Nearby Share...) in one line. Not a link: the app itself."
+version: 0.1.1
 repository: https://github.com/leloeduk/share_lelo
 issue_tracker: https://github.com/leloeduk/share_lelo/issues
 topics: [share, apk, android, bluetooth, file-sharing]
 
 environment:
   sdk: ^3.13.4
-  flutter: '>=3.3.0'
+  flutter: ">=3.3.0"
 
 dependencies:
   flutter:
@@ -39,4 +39,3 @@ flutter:
       android:
         package: com.leloeduk.share_lelo
         pluginClass: ShareLeloPlugin
-

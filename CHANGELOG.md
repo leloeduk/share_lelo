@@ -1,5 +1,11 @@
+## 0.1.1
+
+* Documentation, README, API docs and messages translated to English.
+* Default share sheet title is now "Share app".
+* `ApkInfo.formattedSize` now uses English units (`B`, `KB`, `MB`, `GB`).
+
 ## 0.1.0
 
-* Première version : `ShareLelo.shareApk()`, `getApkInfo()`, `getApkFiles()`, `clearCache()`.
-* Partage direct vers une app précise (`packageName`).
-* Prise en charge des installations App Bundle (APK splits).
+* Initial release: `ShareLelo.shareApk()`, `getApkInfo()`, `getApkFiles()`, `clearCache()`.
+* Share directly to a specific app (`packageName`).
+* Support for App Bundle installs (split APKs).

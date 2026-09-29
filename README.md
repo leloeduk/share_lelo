@@ -1,28 +1,28 @@
 # share_lelo
 
-Partagez **le fichier APK complet** de votre application Flutter — pas un lien, l'application elle-même — via Bluetooth, WhatsApp, Telegram, Gmail, Drive, Nearby Share, etc.
+Share **the full APK file** of your Flutter app — not a link, the app itself — via Bluetooth, WhatsApp, Telegram, Gmail, Drive, Nearby Share and more.
 
-`share_plus` partage du texte ou des fichiers que vous fournissez ; `share_lelo` récupère lui-même l'APK installé sur le téléphone et l'envoie, en **une ligne**.
+`share_plus` shares text or files you provide; `share_lelo` finds the APK installed on the phone and sends it for you, in **one line**.
 
-> Android uniquement (les APK n'existent que sur Android).
+> Android only (APKs only exist on Android).
 
 ## Installation
 
 ```yaml
 dependencies:
-  share_lelo: ^0.1.0
+  share_lelo: ^0.1.1
 ```
 
-**Aucune configuration nécessaire** : pas de permission, pas de `FileProvider` à déclarer, rien à modifier dans `AndroidManifest.xml`. Le plugin s'en occupe.
+**No setup required**: no permissions, no `FileProvider` to declare, nothing to change in `AndroidManifest.xml`. The plugin handles it.
 
-## Utilisation
+## Usage
 
 ```dart
 import 'package:share_lelo/share_lelo.dart';
 
 ElevatedButton(
   onPressed: () => ShareLelo.shareApk(),
-  child: const Text("Partager l'application"),
+  child: const Text('Share app'),
 );
 ```
 
@@ -30,53 +30,53 @@ ElevatedButton(
 
 ```dart
 await ShareLelo.shareApk(
-  fileName: 'MonApp',                  // → MonApp.apk (défaut : NomApp_v1.0.0.apk)
-  chooserTitle: 'Envoyer via…',
-  text: 'Installe mon application !',
-  subject: 'MonApp',
-  packageName: 'com.whatsapp',         // optionnel : ouvre directement WhatsApp
+  fileName: 'MyApp',                   // → MyApp.apk (default: AppName_v1.0.0.apk)
+  chooserTitle: 'Send via…',
+  text: 'Install my app!',
+  subject: 'MyApp',
+  packageName: 'com.whatsapp',         // optional: opens WhatsApp directly
 );
 ```
 
-Quelques `packageName` utiles : `com.android.bluetooth`, `com.whatsapp`, `org.telegram.messenger`, `com.google.android.gm`.
+Useful `packageName` values: `com.android.bluetooth`, `com.whatsapp`, `org.telegram.messenger`, `com.google.android.gm`.
 
-### Informations sur l'APK
+### APK information
 
 ```dart
 final info = await ShareLelo.getApkInfo();
-print(info.appName);        // Mon App
+print(info.appName);        // My App
 print(info.versionName);    // 1.0.0
-print(info.formattedSize);  // 18.4 Mo
+print(info.formattedSize);  // 18.4 MB
 print(info.isSplit);        // false
 ```
 
-### Récupérer le fichier sans partager
+### Get the file without sharing
 
 ```dart
-final files = await ShareLelo.getApkFiles(fileName: 'MonApp');
-// files.first → File('/data/user/0/…/cache/share_lelo/MonApp.apk')
-// upload vers un serveur, etc.
+final files = await ShareLelo.getApkFiles(fileName: 'MyApp');
+// files.first → File('/data/user/0/…/cache/share_lelo/MyApp.apk')
+// upload it to a server, etc.
 
-await ShareLelo.clearCache(); // libère l'espace ensuite
+await ShareLelo.clearCache(); // free up space afterwards
 ```
 
-## ⚠️ Important : APK universel vs App Bundle
+## ⚠️ Important: universal APK vs App Bundle
 
-| Installation de l'app | Résultat du partage |
+| How the app was installed | Sharing result |
 |---|---|
-| `flutter build apk` (APK universel), APK installé à la main | ✅ Un seul `.apk`, installable directement sur n'importe quel Android |
-| Play Store / `flutter build appbundle` | ⚠️ L'app est découpée en plusieurs APK (`info.isSplit == true`). Tous les fichiers sont envoyés, mais le destinataire doit les installer ensemble (ex. avec l'app *SAI*) |
+| `flutter build apk` (universal APK), sideloaded APK | ✅ A single `.apk`, installable directly on any Android device |
+| Play Store / `flutter build appbundle` | ⚠️ The app is split into several APKs (`info.isSplit == true`). All files are sent, but the recipient must install them together (e.g. with the *SAI* app) |
 
-Pour une app destinée au partage hors-store, construisez avec `flutter build apk --release`.
+For an app meant to be shared outside a store, build it with `flutter build apk --release`.
 
-Côté destinataire : Android demandera d'autoriser l'installation depuis « sources inconnues » pour l'application qui a reçu le fichier (Fichiers, WhatsApp…). C'est normal.
+On the recipient's side, Android will ask to allow installs from "unknown sources" for the app that received the file (Files, WhatsApp…). This is expected.
 
-## Fonctionnement
+## How it works
 
-1. Le plugin lit le chemin de l'APK installé (`ApplicationInfo.sourceDir` + `splitSourceDirs`).
-2. Il le copie dans `cache/share_lelo/` avec un nom lisible (en arrière-plan, sans bloquer l'UI).
-3. Il l'expose via son propre `FileProvider` (autorité `<votre.package>.share_lelo.fileprovider`, sans conflit avec d'autres plugins) et ouvre la feuille de partage Android avec le type `application/vnd.android.package-archive`.
+1. The plugin reads the path of the installed APK (`ApplicationInfo.sourceDir` + `splitSourceDirs`).
+2. It copies it to `cache/share_lelo/` with a readable name (in the background, without blocking the UI).
+3. It exposes the file through its own `FileProvider` (authority `<your.package>.share_lelo.fileprovider`, no conflict with other plugins) and opens the Android share sheet with the `application/vnd.android.package-archive` type.
 
-## Licence
+## License
 
-Voir [LICENSE](LICENSE).
+MIT — see [LICENSE](LICENSE).

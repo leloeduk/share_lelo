@@ -21,7 +21,7 @@ import io.flutter.plugin.common.MethodChannel.Result
 import java.io.File
 import java.util.concurrent.Executors
 
-/** ShareLeloPlugin : partage le fichier APK complet de l'application installée. */
+/** ShareLeloPlugin: shares the full APK file of the installed app. */
 class ShareLeloPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
     private lateinit var channel: MethodChannel
     private lateinit var context: Context
@@ -62,7 +62,7 @@ class ShareLeloPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                 prepareApk(call.argument("fileName")).map { it.absolutePath }
             }
             "shareApk" -> {
-                // La copie se fait en arrière-plan, l'ouverture du partage sur le thread UI.
+                // Copy in the background, open the share sheet on the UI thread.
                 executor.execute {
                     val files = try {
                         prepareApk(call.argument("fileName"))
@@ -94,7 +94,7 @@ class ShareLeloPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
         }
     }
 
-    /** Un APK peut peser plusieurs dizaines de Mo : jamais de copie sur le thread UI. */
+    /** An APK can weigh tens of MB: never copy it on the UI thread. */
     private fun inBackground(result: Result, block: () -> Any?) {
         executor.execute {
             try {
@@ -139,9 +139,9 @@ class ShareLeloPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
     private fun cacheDir(): File = File(context.cacheDir, "share_lelo")
 
     /**
-     * Copie l'APK installé dans le cache (le dossier système n'est pas partageable
-     * directement). Si l'app a été installée depuis un App Bundle (splits), tous les
-     * APK sont copiés : ils doivent être installés ensemble.
+     * Copies the installed APK into the cache (the system folder cannot be shared
+     * directly). If the app was installed from an App Bundle (splits), every APK
+     * is copied: they must be installed together.
      */
     private fun prepareApk(requestedName: String?): List<File> {
         val info = apkInfo()
@@ -191,7 +191,7 @@ class ShareLeloPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
         text?.let { intent.putExtra(Intent.EXTRA_TEXT, it) }
         subject?.let { intent.putExtra(Intent.EXTRA_SUBJECT, it) }
 
-        // ClipData : nécessaire pour que la permission de lecture suive l'intent (Android 10+).
+        // ClipData is required for the read permission to follow the intent (Android 10+).
         val clip = ClipData.newRawUri(null, uris[0])
         uris.drop(1).forEach { clip.addItem(ClipData.Item(it)) }
         intent.clipData = clip
@@ -199,7 +199,7 @@ class ShareLeloPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
         val target = if (!targetPackage.isNullOrBlank()) {
             intent.setPackage(targetPackage)
         } else {
-            Intent.createChooser(intent, chooserTitle ?: "Partager l'application")
+            Intent.createChooser(intent, chooserTitle ?: "Share app")
                 .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         }
 
