@@ -10,21 +10,40 @@ Share **the full APK file** of your Flutter app â€” not a link, the app itself â
 
 ```yaml
 dependencies:
-  share_lelo: ^0.1.1
+  share_lelo: ^0.1.2
 ```
 
 **No setup required**: no permissions, no `FileProvider` to declare, nothing to change in `AndroidManifest.xml`. The plugin handles it.
 
 ## Usage
 
+Drop in the ready-made button. It shows a spinner while the APK is copied, prevents double taps and reports errors in a `SnackBar`:
+
 ```dart
 import 'package:share_lelo/share_lelo.dart';
 
-ElevatedButton(
-  onPressed: () => ShareLelo.shareApk(),
-  child: const Text('Share app'),
-);
+const ShareApkButton()
 ```
+
+Customize it if needed:
+
+```dart
+ShareApkButton(
+  label: const Text('Send via Bluetooth'),
+  icon: const Icon(Icons.bluetooth),
+  packageName: 'com.android.bluetooth',
+  text: 'Install my app!',
+  onError: (e) => debugPrint('$e'),     // replaces the default SnackBar
+)
+```
+
+Or call the API from your own widget:
+
+```dart
+await ShareLelo.shareApk();
+```
+
+Use `ShareLelo.isSupported` to hide the button on platforms other than Android.
 
 ### Options
 

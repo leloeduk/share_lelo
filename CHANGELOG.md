@@ -1,3 +1,9 @@
+## 0.1.2
+
+* New `ShareApkButton` widget: one-line integration with built-in loading state and error handling.
+* New `ShareLelo.isSupported` getter (safe on web).
+* Simplified example app.
+
 ## 0.1.1
 
 * Documentation, README, API docs and messages translated to English.

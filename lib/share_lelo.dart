@@ -2,12 +2,18 @@
 ///
 /// ```dart
 /// await ShareLelo.shareApk();
+/// // or, as a widget:
+/// const ShareApkButton();
 /// ```
 library;
 
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
+
 import 'share_lelo_platform_interface.dart';
+
+export 'src/share_apk_button.dart';
 
 /// Information about the installed app's APK.
 class ApkInfo {
@@ -87,8 +93,12 @@ class ShareLelo {
 
   static ShareLeloPlatform get _platform => ShareLeloPlatform.instance;
 
+  /// `true` on Android, the only platform where an APK can be shared.
+  /// Use it to hide the share button on other platforms.
+  static bool get isSupported => !kIsWeb && Platform.isAndroid;
+
   static void _ensureAndroid() {
-    if (!Platform.isAndroid) {
+    if (!isSupported) {
       throw UnsupportedError(
         'share_lelo only works on Android (APKs are Android-specific).',
       );
