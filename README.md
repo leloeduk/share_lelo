@@ -1,5 +1,7 @@
 # share_lelo
 
+![share_lelo: share your Flutter app's APK in one line](https://raw.githubusercontent.com/leloeduk/share_lelo/main/doc/banner.png)
+
 Share **the full APK file** of your Flutter app — not a link, the app itself — via Bluetooth, WhatsApp, Telegram, Gmail, Drive, Nearby Share and more.
 
 `share_plus` shares text or files you provide; `share_lelo` finds the APK installed on the phone and sends it for you, in **one line**.

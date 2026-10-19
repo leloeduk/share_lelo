@@ -4,6 +4,9 @@ version: 0.1.2
 repository: https://github.com/leloeduk/share_lelo
 issue_tracker: https://github.com/leloeduk/share_lelo/issues
 topics: [share, apk, android, bluetooth, file-sharing]
+screenshots:
+  - description: "ShareApkButton opens the Android share sheet with the app's APK."
+    path: doc/banner.png
 
 environment:
   sdk: ^3.13.4
